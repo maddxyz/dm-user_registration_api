@@ -11,3 +11,11 @@ class UserCreateRequest(BaseModel):
 class UserCreateResponse(BaseModel):
     id: UUID
     email: str
+
+
+class ActivationRequest(BaseModel):
+    code: str
+
+
+class ActivationResponse(BaseModel):
+    message: str

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from app.db.pool import create_pool, close_pool
-from app.exceptions import UserAlreadyExists
+from app.exceptions import APIException
 from app.routers import users
 
 
@@ -20,10 +20,10 @@ app = FastAPI(title="User Registration API", lifespan=lifespan)
 app.include_router(users.router)
 
 
-@app.exception_handler(UserAlreadyExists)
-async def user_already_exists_handler(request, exc):
+@app.exception_handler(APIException)
+async def api_exception_handler(request, exc):
     return JSONResponse(
-        status_code=409,
+        status_code=exc.status_code,
         content={"detail": exc.detail, "code": exc.code},
     )
 
