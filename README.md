@@ -60,7 +60,7 @@ docker-compose logs app
 | Status | Code | Description |
 |--------|------|-------------|
 | 409 | USER_ALREADY_EXISTS | Email already registered |
-| 422 | — | Invalid email format |
+| 422 | Unprocessable Content | Invalid email format |
 
 ### POST /users/activate — Activate account
 
@@ -82,7 +82,8 @@ curl -X POST http://localhost:8000/users/activate \
 | Status | Code | Description |
 |--------|------|-------------|
 | 401 | INVALID_CREDENTIALS | Wrong email or password |
-| 400 | INVALID_CODE | Wrong or already used code |
+| 409 | USER_ALREADY_ACTIVE | Account is already active |
+| 400 | INVALID_CODE | Invalid activation code |
 | 410 | CODE_EXPIRED | Code older than 60 seconds |
 
 ## Architecture

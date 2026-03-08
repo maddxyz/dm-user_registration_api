@@ -10,7 +10,7 @@ from pwdlib.hashers.bcrypt import BcryptHasher
 from app.config import settings
 from app.db.pool import get_db_pool
 from app.db.user_repository import UserRepository
-from app.exceptions import CodeExpired, InvalidCode, InvalidCredentials, UserAlreadyExists
+from app.exceptions import CodeExpired, InvalidCode, InvalidCredentials, UserAlreadyActive, UserAlreadyExists
 from app.schemas.user import ActivationRequest, ActivationResponse, UserCreateRequest, UserCreateResponse
 from app.services.email import ConsoleEmailService, HTTPEmailService, EmailService
 
@@ -65,6 +65,9 @@ async def activate(
     user = await repo.get_user_by_email(credentials.username)
     if not user or not pwd_hash.verify(credentials.password, user.hashed_password):
         raise InvalidCredentials()
+
+    if user.is_active:
+        raise UserAlreadyActive()
 
     activation_code = await repo.get_latest_code_for_user(user.id)
     if not activation_code:

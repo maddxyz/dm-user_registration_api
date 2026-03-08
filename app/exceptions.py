@@ -18,7 +18,7 @@ class InvalidCredentials(APIException):
 
 class InvalidCode(APIException):
     status_code = 400
-    detail = "Invalid or already used activation code"
+    detail = "Invalid activation code"
     code = "INVALID_CODE"
 
 
@@ -26,3 +26,9 @@ class CodeExpired(APIException):
     status_code = 410
     detail = "Activation code has expired"
     code = "CODE_EXPIRED"
+
+
+class UserAlreadyActive(APIException):
+    status_code = 409
+    detail = "Account is already active"
+    code = "USER_ALREADY_ACTIVE"

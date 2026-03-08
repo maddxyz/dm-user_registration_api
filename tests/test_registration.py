@@ -40,6 +40,11 @@ async def test_register_duplicate_email(client):
     assert response.json()["code"] == "USER_ALREADY_EXISTS"
 
 
+async def test_register_short_password(client):
+    response = await register_user(client, password="short")
+    assert response.status_code == 422
+
+
 async def test_register_invalid_email(client):
     response = await client.post(
         "/users",
@@ -118,7 +123,7 @@ async def test_activate_expired_code(client):
     assert response.json()["code"] == "CODE_EXPIRED"
 
 
-async def test_activate_already_used_code(client):
+async def test_activate_already_active_account(client):
     await register_user(client)
     code = client.mock_email.send_activation_code.call_args[0][1]
 
@@ -133,5 +138,5 @@ async def test_activate_already_used_code(client):
         json={"code": code},
         headers=basic_auth_header("user@test.com", "secret123"),
     )
-    assert response.status_code == 400
-    assert response.json()["code"] == "INVALID_CODE"
+    assert response.status_code == 409
+    assert response.json()["code"] == "USER_ALREADY_ACTIVE"
