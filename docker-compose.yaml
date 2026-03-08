@@ -25,5 +25,35 @@ services:
       timeout: 5s
       retries: 5
 
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: registration_tests
+    env_file: .env.test
+    command: ["pytest", "-v", "--tb=short"]
+    depends_on:
+      db_test:
+        condition: service_healthy
+    profiles:
+      - test
+
+  db_test:
+    image: postgres:16-alpine
+    container_name: registration_db_test
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: test_db
+    volumes:
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d test_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - test
+
 volumes:
   postgres_data:
