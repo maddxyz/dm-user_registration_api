@@ -11,7 +11,8 @@ from app.db.pool import get_db_pool
 from app.db.user_repository import UserRepository
 from app.exceptions import CodeExpired, InvalidCode, InvalidCredentials, UserAlreadyExists
 from app.schemas.user import ActivationRequest, ActivationResponse, UserCreateRequest, UserCreateResponse
-from app.services.email import ConsoleEmailService, EmailService
+from app.config import settings
+from app.services.email import ConsoleEmailService, HTTPEmailService, EmailService
 
 pwd_hash = PasswordHash((BcryptHasher(),))
 
@@ -20,6 +21,8 @@ security = HTTPBasic()
 
 
 def get_email_service() -> EmailService:
+    if settings.email_service == "http":
+        return HTTPEmailService(api_url=settings.email_api_url, api_key=settings.email_api_key)
     return ConsoleEmailService()
 
 
