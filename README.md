@@ -133,6 +133,9 @@ graph TB
 ## Project Structure
 
 ```
+docs/
+└── API Diagram.png      # Architecture diagram
+
 app/
 ├── main.py              # FastAPI app, lifespan, exception handler
 ├── config.py            # Pydantic BaseSettings (env vars)
