@@ -15,7 +15,7 @@ A user signs up with their email and password, gets a 4-digit activation code, a
 Copy `.env.example` to `.env` and run:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 The API is available at `http://localhost:8000`.
@@ -24,7 +24,7 @@ Swagger UI is available at `http://localhost:8000/docs`.
 ### Run the tests
 
 ```bash
-docker-compose --profile test run --build test
+docker compose --profile test run --build test
 ```
 
 ### Reset the database
@@ -32,7 +32,7 @@ docker-compose --profile test run --build test
 When testing manually with curl, the database persists between runs. To reset it:
 
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 ## API Reference
@@ -53,7 +53,7 @@ curl -X POST http://localhost:8000/users \
 The activation code is printed in the application logs. Check it with:
 
 ```bash
-docker-compose logs app
+docker compose logs app
 ```
 
 **Errors:**
