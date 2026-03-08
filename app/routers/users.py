@@ -7,11 +7,11 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
 
+from app.config import settings
 from app.db.pool import get_db_pool
 from app.db.user_repository import UserRepository
 from app.exceptions import CodeExpired, InvalidCode, InvalidCredentials, UserAlreadyExists
 from app.schemas.user import ActivationRequest, ActivationResponse, UserCreateRequest, UserCreateResponse
-from app.config import settings
 from app.services.email import ConsoleEmailService, HTTPEmailService, EmailService
 
 pwd_hash = PasswordHash((BcryptHasher(),))
